@@ -5,6 +5,8 @@ export class StatsController {
   constructor(private service: StatsService) {}
 
   get: RequestHandler = async (_req, res) => {
-    res.json({ success: true, data: await this.service.get() });
+    const result = await this.service.get();
+    res.setHeader("X-Cache", result.hit ? "HIT" : "MISS");
+    res.json(result.body);
   };
 }

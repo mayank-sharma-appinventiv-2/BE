@@ -1,3 +1,4 @@
+import { RedisProvider } from "./providers/redis/RedisProvider.js";
 import express, { type Express } from "express";
 import { ApiRoutes } from "./routes/ApiRoutes.js";
 import { ErrorMiddleware } from "./middlewares/ErrorMiddleware.js";
@@ -16,6 +17,7 @@ class Server {
         this.port = Config.env.PORT;
         this.app.use(express.json());
         await DatabaseProvider.connect();
+        await RedisProvider.connect();
         this.app.use("/api", new ApiRoutes().router);
         this.app.use(new ErrorMiddleware().handle);
         this.startServer();
